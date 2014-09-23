@@ -4,37 +4,29 @@ class ArticleController extends ControllerBase {
 
     public function indexAction() {
 
-        $comments = Comments::find();
+        if($this->request->isPost()) {
+            $comment = new Comments();
 
-//        var_dump($comments);die();
+            $successAdd = $comment->save($this->request->getPost(), array('comment'));
 
+            if ($successAdd) {
+                $this->response->redirect('article');
+            } else {
+                $errors = array();
 
-    }
+                foreach ($comment->getMessages() as $message) {
+                    array_push($errors,$message->getMessage());
+                }
 
-    public function addcommentAction() {
-        $comment = new Comments();
-
-//        var_dump($this->request->getPost());die();
-
-        $successAdd = $comment->save($this->request->getPost(), array('comment'));
-
-        if ($successAdd) {
-            $this->response->redirect('article');
-        } else {
-            echo "К сожалению, возникли следующие проблемы: ";
-            foreach ($comment->getMessages() as $message) {
-                echo $message->getMessage(), "<br/>";
+                $this->view->setVar('errors', $errors);
             }
         }
-    }
-
-    public function commentsAction() {
 
         $comments = Comments::find();
+        $this->view->setVar('comments', $comments);
+    }
 
-        foreach ($comments as $comment) {
-            echo $comment->comment . "<br/>";
-        }
+    public function addCommentAction() {
 
     }
 
