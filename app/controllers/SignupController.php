@@ -12,8 +12,6 @@ class SignupController extends ControllerBase {
 
 //        var_dump($this->request->getPost());die();
 
-//        var_dump($this->response->redirect());die();
-
         $success = $user->save($this->request->getPost(), array('name', 'email', 'password'));
 
         if ($success) {
