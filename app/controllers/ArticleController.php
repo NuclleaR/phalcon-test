@@ -5,9 +5,13 @@ class ArticleController extends ControllerBase {
     public function indexAction() {
 
         if ($this->request->isPost()) {
-            $comment = new Comments();
 
-            $successAdd = $comment->save($this->request->getPost(), array('comment'));
+            $post = $this->request->getPost();
+
+            $comment = new Comments();
+            $comment->setComment($post['comment']);
+
+            $successAdd = $comment->save();
 
             if ($successAdd) {
 

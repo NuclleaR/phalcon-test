@@ -22,11 +22,12 @@
             <div id="comments">
 
                 <?php
+
                 if (!empty($comments)) {
                     foreach ($comments as $comment) {
                         ?>
 
-                        <div><?php echo $comment->comment; ?></div>
+                        <div><? echo $comment->getComment(); ?></div>
 
                     <?php
                     }
