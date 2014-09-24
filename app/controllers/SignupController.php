@@ -4,22 +4,30 @@ class SignupController extends ControllerBase {
 
     public function indexAction() {
 
-    }
+        if($this->request->isPost()){
+            
+            $post = $this->request->getPost();
+            $user = new Users();
+            $user->setEmail($post['email']);
+            $user->setName($post['name']);
+            $user->setPassword($post['password']);
 
-    public function registerAction() {
+            $success = $user->save();
 
-        $user = new Users();
+            if ($success) {
 
-//        var_dump($this->request->getPost());die();
+                $this->response->redirect();
 
-        $success = $user->save($this->request->getPost(), array('name', 'email', 'password'));
+            } else {
 
-        if ($success) {
-            $this->response->redirect();
-        } else {
-            echo "К сожалению, возникли следующие проблемы: ";
-            foreach ($user->getMessages() as $message) {
-                echo $message->getMessage(), "<br/>";
+                $errors = array();
+
+                foreach ($user->getMessages() as $message) {
+                    array_push($errors, $message->getMessage());
+                }
+
+                $this->view->setVar('errors', $errors);
+
             }
         }
     }

@@ -65,7 +65,9 @@ $di->set('db', function () use ($config) {
  * If the configuration specify the use of metadata adapter use it or use memory otherwise
  */
 $di->set('modelsMetadata', function () {
-    return new MetaDataAdapter();
+    $adapter = new MetaDataAdapter();
+    $adapter->setStrategy(new \Phalcon\Mvc\Model\MetaData\Strategy\Annotations());
+    return $adapter;
 });
 
 /**
@@ -77,7 +79,3 @@ $di->set('session', function () {
 
     return $session;
 });
-
-/*
- *
- */
